@@ -12,6 +12,7 @@ namespace Backend.Models.Database
         public int MovieId { get; set; }
         [Required]
         public string MovieTitle { get; set; }
+        public int MovieYear { get; set; }
 
         public ICollection<Rating> Ratings { get; set; }
 
