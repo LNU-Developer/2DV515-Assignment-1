@@ -1,14 +1,14 @@
 using Backend.Models.Database;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Backend.Models.Recommendation;
 
 namespace Backend.Models.Services
 {
-    public class EuclideanDistance : RecommendationSystemService
+    public class EuclideanDistanceService : RecommendationSystemService
     {
-        public EuclideanDistance(Context context) : base(context)
+        public EuclideanDistanceService(Context context) : base(context)
         {
         }
 
@@ -33,16 +33,7 @@ namespace Backend.Models.Services
             return 1 / (1 + d); //The higher value the more dissimmilar the scores are, can either invert or take this into account in the sorting model. I have choosen to invert. Making higher scores better.
         }
 
-        public async Task<List<Recommendation>> FindKMovieRecommendation(int selectedUserId, int k = 3)
-        {
-            var selectedUser = await GetUserById(selectedUserId);
-            var similarites = await CalculateSimilarityScores(selectedUser);
-            var weightedScores = await CalculateRatingWeightedScores(selectedUser, similarites);
-            var bestMovies = await FindBestMovies(similarites, weightedScores);
-            return bestMovies.Where(x => x.AverageWeightedRating > 0).Take(k).ToList();
-        }
-
-        private async Task<List<Similarity>> CalculateSimilarityScores(User selectedUser)
+        public override async Task<List<Similarity>> CalculateSimilarityScores(User selectedUser)
         {
             var users = await GetAllUsersDataExceptSelected(selectedUser);
 

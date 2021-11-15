@@ -34,7 +34,8 @@ namespace Backend
                 optionsBuilder.UseSqlite(keepAliveConnection);
             });
 
-            services.AddTransient<EuclideanDistance>();
+            services.AddTransient<EuclideanDistanceService>();
+            services.AddTransient<PearsonCorrelationService>();
 
             services.AddCors(options =>
             {

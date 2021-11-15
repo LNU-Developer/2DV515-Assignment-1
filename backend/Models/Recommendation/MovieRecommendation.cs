@@ -1,6 +1,6 @@
-namespace Backend.Models
+namespace Backend.Models.Recommendation
 {
-    public class Recommendation
+    public class MovieRecommendation
     {
         public int MovieId { get; set; }
         public string MovieTitle { get; set; }
