@@ -34,7 +34,7 @@ namespace Backend
                 optionsBuilder.UseSqlite(keepAliveConnection);
             });
 
-            services.AddTransient<RecommendationSystemService>();
+            services.AddTransient<EuclideanDistance>();
 
             services.AddCors(options =>
             {
