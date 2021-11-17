@@ -10,22 +10,30 @@ namespace Backend.Controllers
     {
         private readonly EuclideanDistanceService _euclideanDistance;
         private readonly PearsonCorrelationService _pearsonsCorrelation;
-        public RecommendationController(EuclideanDistanceService euclideanDistance, PearsonCorrelationService pearsonsCorrelation)
+        private readonly ItemBasedCollaborativeFilteringService _itemBasedCollaborativeFilteringService;
+        public RecommendationController(EuclideanDistanceService euclideanDistance, PearsonCorrelationService pearsonsCorrelation, ItemBasedCollaborativeFilteringService itemBasedCollaborativeFilteringService)
         {
             _euclideanDistance = euclideanDistance;
             _pearsonsCorrelation = pearsonsCorrelation;
+            _itemBasedCollaborativeFilteringService = itemBasedCollaborativeFilteringService;
         }
 
-        [HttpGet("euclidiandistance/")]
+        [HttpGet("ubcf/ed/")]
         public async Task<IActionResult> GetMovieRecommendationsByEuclidianDistance(int userId, int k = 3)
         {
             return Ok(await _euclideanDistance.FindKMovieRecommendation(userId, k));
         }
 
-        [HttpGet("pearsoncorrelation/")]
+        [HttpGet("ubcf/pc/")]
         public async Task<IActionResult> GetMovieRecommendationsByPearsonCorrelation(int userId, int k = 3)
         {
             return Ok(await _pearsonsCorrelation.FindKMovieRecommendation(userId, k));
+        }
+
+        [HttpGet("ibcf/ed/")]
+        public async Task<IActionResult> GetMovieRecommendationsByItemBasedCollaborativeFilteringService(int userId, int k = 3)
+        {
+            return Ok(await _itemBasedCollaborativeFilteringService.FindKMovieRecommendation(userId, k));
         }
     }
 }

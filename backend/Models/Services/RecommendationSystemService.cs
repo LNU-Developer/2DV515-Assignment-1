@@ -32,7 +32,7 @@ namespace Backend.Models.Services
             var weightedScores = new List<RatingWeightedScore>();
             foreach (var user in users)
             {
-                var similarityUser = similarites.FirstOrDefault(x => x.UserId == user.UserId);
+                var similarityUser = similarites.FirstOrDefault(x => x.Id == user.UserId);
                 if (similarityUser is not null) // Only simalrities above zero are interesting, not negative or zero.
                 {
                     var similarityScore = similarityUser.SimilarityScore;
@@ -62,7 +62,7 @@ namespace Backend.Models.Services
 
                 //Sum all similaritiescores on users that have voted on that movie
                 foreach (var user in allUsersThatRatedMovie)
-                    sumOfSimilarities += similarites.Where(y => y.UserId == user.UserId).Sum(x => x.SimilarityScore);
+                    sumOfSimilarities += similarites.Where(y => y.Id == user.UserId).Sum(x => x.SimilarityScore);
 
                 //Sum all weighted scores for that movie
                 var sumOfMovieScores = weightedScores.Where(x => x.MovieId == movie.MovieId).Sum(y => y.WeightedScore);

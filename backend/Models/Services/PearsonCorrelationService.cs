@@ -1,18 +1,16 @@
 using Backend.Models.Database;
+using Backend.Models.Repositories;
 using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Backend.Models.Recommendation;
 
 namespace Backend.Models.Services
 {
-    public class PearsonCorrelationService : RecommendationSystemService
+    public class PearsonCorrelationService : UserBasedCollaborativeFilteringService
     {
-        public PearsonCorrelationService(Context context) : base(context)
+        public PearsonCorrelationService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
 
-        private double CalculatePearsonCorrelation(User A, User B)
+        public override double CalculateDistance(User A, User B)
         {
             double sum1 = 0, sum2 = 0, sum1sq = 0, sum2sq = 0, psum = 0;
             int n = 0;
@@ -36,26 +34,6 @@ namespace Backend.Models.Services
             double num = psum - ((sum1 * sum2) / n);
             double den = Math.Sqrt((sum1sq - Math.Pow(sum1, 2.0) / n) * (sum2sq - Math.Pow(sum2, 2.0) / n));
             return num / den;
-        }
-
-
-        public override async Task<List<Similarity>> CalculateSimilarityScores(User selectedUser)
-        {
-            var users = await GetAllUsersDataExceptSelected(selectedUser);
-
-            var similarityList = new List<Similarity>();
-            foreach (var user in users)
-            {
-                double pearsonCorrelation = CalculatePearsonCorrelation(selectedUser, user);
-
-                if (pearsonCorrelation < 0) continue; //Not interested dissimilar scores, i.e only show scores with similarites
-                similarityList.Add(new Similarity
-                {
-                    UserId = user.UserId,
-                    SimilarityScore = pearsonCorrelation
-                });
-            }
-            return similarityList;
         }
     }
 }

@@ -12,6 +12,7 @@ using TinyCsvParser;
 using Backend.Models.CsvMappings;
 using System.Text;
 using System.Linq;
+using Backend.Models.Repositories;
 
 namespace Backend
 {
@@ -36,6 +37,8 @@ namespace Backend
 
             services.AddTransient<EuclideanDistanceService>();
             services.AddTransient<PearsonCorrelationService>();
+            services.AddTransient<ItemBasedCollaborativeFilteringService>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddCors(options =>
             {
