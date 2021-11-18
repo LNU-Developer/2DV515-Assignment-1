@@ -49,6 +49,7 @@ namespace Backend.Models.Services
                 similarityList.Add(new Similarity
                 {
                     Id = movie.MovieId,
+                    Name = movie.MovieTitle,
                     SimilarityScore = distance
                 });
             }

@@ -35,5 +35,17 @@ namespace Backend.Controllers
         {
             return Ok(await _itemBasedCollaborativeFilteringService.FindKMovieRecommendation(userId, k));
         }
+
+        [HttpGet("ubcfs/ed/")]
+        public async Task<IActionResult> GetTopUsersSimilaritiesByEuclidianDistance(int userId, int k = 3)
+        {
+            return Ok(await _euclideanDistance.FindKTopSimilar(userId, k));
+        }
+
+        [HttpGet("ubcfs/pc/")]
+        public async Task<IActionResult> GetTopUsersSimilaritiesByPearsonCorrelation(int userId, int k = 3)
+        {
+            return Ok(await _pearsonsCorrelation.FindKTopSimilar(userId, k));
+        }
     }
 }

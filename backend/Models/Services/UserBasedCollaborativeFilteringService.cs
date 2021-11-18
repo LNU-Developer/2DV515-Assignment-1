@@ -24,6 +24,13 @@ namespace Backend.Models.Services
             return bestMovies.Where(x => x.AverageWeightedRating > 0).Take(k).ToList();
         }
 
+        public async Task<List<Similarity>> FindKTopSimilar(int selectedUserId, int k = 3)
+        {
+            var selectedUser = await _unitOfWork.Users.GetUserById(selectedUserId);
+            var similarites = await CalculateSimilarityScores(selectedUser);
+            return similarites.Where(x => x.SimilarityScore > 0).Take(k).ToList();
+        }
+
         public abstract double CalculateDistance(User A, User B);
 
         public async Task<List<Similarity>> CalculateSimilarityScores(User selectedUser)
@@ -38,6 +45,7 @@ namespace Backend.Models.Services
                 similarityList.Add(new Similarity
                 {
                     Id = user.UserId,
+                    Name = user.UserName,
                     SimilarityScore = distance
                 });
             }
